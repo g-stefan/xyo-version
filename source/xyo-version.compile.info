@@ -1,0 +1,3 @@
+--exe xyo-version
+--use-path=source
+--use-project=xyo.static
