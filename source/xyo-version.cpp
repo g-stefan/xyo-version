@@ -40,7 +40,15 @@ namespace Main {
 
 		printf("%s",
 			"options:\n"
-			"    --license           show license\n"
+			"    --license               show license\n"
+			"    --usage                 this info\n"
+			"    --no-bump               do not increment version\n"
+			"    --bump                  increment version\n"
+			"    --version-file=file     use file for version info\n"
+			"    --file-in=file          input file for replace\n"
+			"    --file-out=file         output file for replace\n"
+			"    --max-line-size=size    line size for replace\n"
+			"    --get                   show version info\n"
 		);
 		printf("\n");
 	};
