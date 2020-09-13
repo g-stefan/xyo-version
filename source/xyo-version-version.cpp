@@ -13,9 +13,9 @@ namespace XYOVersion {
 	namespace Version {
 
 		static const char *version_ = "1.1.0";
-		static const char *build_ = "3";
-		static const char *versionWithBuild_ = "1.1.0.3";
-		static const char *datetime_ = "2020-08-19 12:33:05";
+		static const char *build_ = "5";
+		static const char *versionWithBuild_ = "1.1.0.5";
+		static const char *datetime_ = "2020-09-13 23:18:46";
 
 		const char *version() {
 			return version_;
