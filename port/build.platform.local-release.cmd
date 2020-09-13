@@ -3,7 +3,7 @@ rem Public domain
 rem http://unlicense.org/
 rem Created by Grigore Stefan <g_stefan@yahoo.com>
 
-echo -^> platorm local-release xyo-version
+echo -^> platform local-release xyo-version
 
 goto cmdXDefined
 :cmdX
