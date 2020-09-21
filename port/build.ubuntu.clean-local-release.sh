@@ -3,7 +3,6 @@
 # http://unlicense.org/
 # Created by Grigore Stefan <g_stefan@yahoo.com>
 
-echo "-> clean xyo-version"
+echo "-> clean-local-release xyo-version"
 
-rm -rf bin
-rm -rf build
+rm -rf release

@@ -43,7 +43,11 @@ namespace Main {
 			"    --license               show license\n"
 			"    --usage                 this info\n"
 			"    --no-bump               do not increment version\n"
-			"    --bump                  increment version\n"
+			"    --bump                  increment version build number\n"
+			"    --bump-build            increment version build number\n"
+			"    --bump-patch            increment version patch number\n"
+			"    --bump-minor            increment version minor number\n"
+			"    --bump-major            increment version major number\n"
 			"    --version-file=file     use file for version info\n"
 			"    --file-in=file          input file for replace\n"
 			"    --file-out=file         output file for replace\n"
@@ -64,7 +68,10 @@ namespace Main {
 		String optValue;
 
 		String versionFile = "version.ini";
-		bool bumpVersion = true;
+		bool bumpVersionBuild = false;
+		bool bumpVersionPatch = false;
+		bool bumpVersionMinor = false;
+		bool bumpVersionMajor = false;
 		bool hasBumpVersion = false;
 		String projectName;
 		String fileIn;
@@ -94,11 +101,32 @@ namespace Main {
 					return 0;
 				};
 				if (opt == "no-bump") {
-					bumpVersion = false;
+					bumpVersionBuild = false;
+					hasBumpVersion = false;
 					continue;
 				};
 				if (opt == "bump") {
-					bumpVersion = true;
+					bumpVersionBuild = true;
+					hasBumpVersion = true;
+					continue;
+				};
+				if (opt == "bump-build") {
+					bumpVersionBuild = true;
+					hasBumpVersion = true;
+					continue;
+				};
+				if (opt == "bump-patch") {
+					bumpVersionPatch = true;
+					hasBumpVersion = true;
+					continue;
+				};
+				if (opt == "bump-minor") {
+					bumpVersionMinor = true;
+					hasBumpVersion = true;
+					continue;
+				};
+				if (opt == "bump-major") {
+					bumpVersionMajor = true;
 					hasBumpVersion = true;
 					continue;
 				};
@@ -180,8 +208,32 @@ namespace Main {
 			return 0;
 		};
 
-		if(bumpVersion) {
+		if(bumpVersionBuild) {
 			if(!Compiler::versionBuildBump(versionFile, projectName)) {
+				if(!Compiler::versionSetVersion(versionFile, projectName, "0.0.0")) {
+					return 1;
+				};
+			};
+		};
+
+		if(bumpVersionPatch) {
+			if(!Compiler::versionPatchBump(versionFile, projectName)) {
+				if(!Compiler::versionSetVersion(versionFile, projectName, "0.0.0")) {
+					return 1;
+				};
+			};
+		};
+
+		if(bumpVersionMinor) {
+			if(!Compiler::versionMinorBump(versionFile, projectName)) {
+				if(!Compiler::versionSetVersion(versionFile, projectName, "0.0.0")) {
+					return 1;
+				};
+			};
+		};
+
+		if(bumpVersionMajor) {
+			if(!Compiler::versionMajorBump(versionFile, projectName)) {
 				if(!Compiler::versionSetVersion(versionFile, projectName, "0.0.0")) {
 					return 1;
 				};
