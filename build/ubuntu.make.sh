@@ -17,4 +17,4 @@ cmdX(){
 	fi
 }
 
-cmdX xyo-cc --mode=$ACTION @source/xyo-version.compile
+cmdX xyo-cc --mode=$ACTION @build/source/xyo-version.compile

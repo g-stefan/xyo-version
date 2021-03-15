@@ -167,38 +167,35 @@ namespace Main {
 		};
 
 		//
-		// If no parameters given, but "bump", search for a ".version.ini" file
+		// If no project name given, search for a ".version.ini" or "version.ini" file
 		// and use first section as project name
 		//
-		if(hasBumpVersion) {
-			bool isOk = false;
-			if(projectName.length() == 0) {
-				if(!Shell::fileExists(versionFile)) {
-					TDynamicArray<String> fileList;
-					Shell::getFileList("*.version.ini", fileList);
+
+		bool isOk = false;
+		if(projectName.length() == 0) {
+			if(!Shell::fileExists(versionFile)) {
+				TDynamicArray<String> fileList;
+				Shell::getFileList("*.version.ini", fileList);
+				if(fileList.length() == 0) {
+					Shell::getFileList("version.ini", fileList);
 					if(fileList.length() == 0) {
 						printf("Error: project version file not found\n");
 						return 1;
 					};
-					versionFile = fileList[0];
 				};
-				INIFile iniFile;
-				if(INIFileX::load(versionFile, iniFile)) {
-					if(INIFileX::getSection(iniFile, 0, projectName)) {
-						if(projectName.length() > 0) {
-							isOk = true;
-						};
+				versionFile = fileList[0];
+			};
+			INIFile iniFile;
+			if(INIFileX::load(versionFile, iniFile)) {
+				if(INIFileX::getSection(iniFile, 0, projectName)) {
+					if(projectName.length() > 0) {
+						isOk = true;
 					};
 				};
 			};
-			if(!isOk) {
-				printf("Error: project not found\n");
-				return 1;
-			};
 		};
-
-		if(projectName.length() == 0) {
-			printf("Error: project not specified\n");
+		if(!isOk) {
+			printf("Error: project not found or not specified\n");
 			return 1;
 		};
 

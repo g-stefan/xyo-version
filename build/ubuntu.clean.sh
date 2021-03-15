@@ -5,5 +5,5 @@
 
 echo "-> clean xyo-version"
 
-rm -rf bin
-rm -rf build
+rm -rf output
+rm -rf temp
