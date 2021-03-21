@@ -162,6 +162,7 @@ namespace Main {
 					getVersion = true;
 					continue;
 				};
+				continue;
 			};
 			projectName = cmdS[i];
 		};
@@ -171,8 +172,9 @@ namespace Main {
 		// and use first section as project name
 		//
 
-		bool isOk = false;
+
 		if(projectName.length() == 0) {
+			bool isOk = false;
 			if(!Shell::fileExists(versionFile)) {
 				TDynamicArray<String> fileList;
 				Shell::getFileList("*.version.ini", fileList);
@@ -193,10 +195,10 @@ namespace Main {
 					};
 				};
 			};
-		};
-		if(!isOk) {
-			printf("Error: project not found or not specified\n");
-			return 1;
+			if(!isOk) {
+				printf("Error: project not found or not specified\n");
+				return 1;
+			};
 		};
 
 		if(getVersion) {
