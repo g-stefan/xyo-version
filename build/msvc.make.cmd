@@ -19,3 +19,4 @@ exit 1
 :cmdXDefined
 
 call :cmdX xyo-cc --mode=%ACTION% @build/source/xyo-version.compile
+call :cmdX xyo-cc --mode=%ACTION% @build/source/xyo-version.library.compile

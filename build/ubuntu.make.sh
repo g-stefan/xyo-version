@@ -18,3 +18,4 @@ cmdX(){
 }
 
 cmdX xyo-cc --mode=$ACTION @build/source/xyo-version.compile
+cmdX xyo-cc --mode=$ACTION @build/source/xyo-version.library.compile

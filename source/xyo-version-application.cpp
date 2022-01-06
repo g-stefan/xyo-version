@@ -12,36 +12,27 @@
 #include <string.h>
 
 #include "xyo.hpp"
+#include "xyo-version-application.hpp"
 #include "xyo-version-copyright.hpp"
 #include "xyo-version-license.hpp"
+#ifndef XYO_VERSION_NO_VERSION
 #include "xyo-version-version.hpp"
+#endif
 
-namespace Main {
+namespace XYOVersion {
 
 	using namespace XYO;
 
-	class Application :
-		public virtual IMain {
-			XYO_DISALLOW_COPY_ASSIGN_MOVE(Application);
-		public:
-
-			inline Application() {};
-
-			void showUsage();
-			void showLicense();
-
-			int main(int cmdN, char *cmdS[]);
-	};
-
 	void Application::showUsage() {
 		printf("xyo-version - Utility for generating software version numbers\n");
-		printf("version %s build %s [%s]\n", XYOVersion::Version::version(), XYOVersion::Version::build(), XYOVersion::Version::datetime());
+		showVersion();
 		printf("%s\n\n", XYOVersion::Copyright::fullCopyright());
 
 		printf("%s",
 			"options:\n"
-			"    --license               show license\n"
 			"    --usage                 this info\n"
+			"    --license               show license\n"
+			"    --version               show version\n"
 			"    --no-bump               do not increment version\n"
 			"    --bump                  increment version build number\n"
 			"    --bump-build            increment version build number\n"
@@ -52,13 +43,19 @@ namespace Main {
 			"    --file-in=file          input file for replace\n"
 			"    --file-out=file         output file for replace\n"
 			"    --max-line-size=size    line size for replace\n"
-			"    --get                   show version info\n"
+			"    --get                   show project version info\n"
 		);
 		printf("\n");
 	};
 
 	void Application::showLicense() {
 		printf("%s", XYOVersion::License::content());
+	};
+
+	void Application::showVersion() {
+#ifndef XYO_VERSION_NO_VERSION
+		printf("version %s build %s [%s]\n", XYOVersion::Version::version(), XYOVersion::Version::build(), XYOVersion::Version::datetime());
+#endif
 	};
 
 	int Application::main(int cmdN, char *cmdS[]) {
@@ -79,7 +76,7 @@ namespace Main {
 		int maxLineSize = 16384;
 		bool getVersion = false;
 
-		if(cmdN <= 1) {
+		if(cmdN < 1) {
 			showUsage();
 			return 0;
 		};
@@ -92,12 +89,16 @@ namespace Main {
 					optValue = String::substring(opt, optIndex + 1);
 					opt = String::substring(opt, 0, optIndex);
 				};
+				if (opt == "usage") {
+					showUsage();
+					return 0;
+				};
 				if (opt == "license") {
 					showLicense();
 					return 0;
 				};
-				if (opt == "usage") {
-					showUsage();
+				if (opt == "version") {
+					showVersion();
 					return 0;
 				};
 				if (opt == "no-bump") {
@@ -255,4 +256,7 @@ namespace Main {
 
 };
 
-XYO_APPLICATION_MAIN_STD(Main::Application);
+#ifndef XYO_VERSION_LIBRARY
+XYO_APPLICATION_MAIN_STD(XYOVersion::Application);
+#endif
+
