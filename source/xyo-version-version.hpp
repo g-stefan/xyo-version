@@ -10,10 +10,10 @@
 #ifndef XYO_VERSION_VERSION_HPP
 #define XYO_VERSION_VERSION_HPP
 
-#define XYO_VERSION_VERSION_ABCD                3,6,0,29
-#define XYO_VERSION_VERSION_STR                 "3.6.0"
-#define XYO_VERSION_VERSION_STR_BUILD           "29"
-#define XYO_VERSION_VERSION_STR_DATETIME        "2022-01-01 21:19:32"
+#define XYO_VERSION_VERSION_ABCD                3,8,0,35
+#define XYO_VERSION_VERSION_STR                 "3.8.0"
+#define XYO_VERSION_VERSION_STR_BUILD           "35"
+#define XYO_VERSION_VERSION_STR_DATETIME        "2022-01-09 01:13:03"
 
 #ifndef XYO_RC
 

@@ -19,9 +19,12 @@
 #include "xyo-version-version.hpp"
 #endif
 
+#include "xyo-cc-compiler.hpp"
+
 namespace XYOVersion {
 
 	using namespace XYO;
+	using namespace XYOCC;
 
 	void Application::showUsage() {
 		printf("xyo-version - Utility for generating software version numbers\n");
