@@ -12,10 +12,10 @@
 namespace XYOVersion {
 	namespace Version {
 
-		static const char *version_ = "3.8.0";
-		static const char *build_ = "35";
-		static const char *versionWithBuild_ = "3.8.0.35";
-		static const char *datetime_ = "2022-01-09 01:13:03";
+		static const char *version_ = "3.9.0";
+		static const char *build_ = "39";
+		static const char *versionWithBuild_ = "3.9.0.39";
+		static const char *datetime_ = "2022-04-04 01:44:46";
 
 		const char *version() {
 			return version_;
@@ -32,4 +32,3 @@ namespace XYOVersion {
 
 	};
 };
-
