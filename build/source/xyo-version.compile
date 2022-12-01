@@ -1,4 +1,0 @@
---exe xyo-version
---use-project=xyo.static
---use-project=xyo-cc.static
---install-dev

@@ -1,0 +1,11 @@
+// Version
+// Copyright (c) 2022 Grigore Stefan <g_stefan@yahoo.com>
+// MIT License (MIT) <http://opensource.org/licenses/MIT>
+// SPDX-FileCopyrightText: 2022 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-License-Identifier: MIT
+
+#include <XYO/Version/Library.rh>
+#include <XYO/Version/Copyright.rh>
+#include <XYO/Version/Version.rh>
+
+XYO_APPLICATION_VERSION_INFO(XYO_VERSION,"xyo-version.dll","XYO Version")

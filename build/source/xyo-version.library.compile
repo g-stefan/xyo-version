@@ -1,7 +1,0 @@
---lib xyo-version
---def=XYO_VERSION_LIBRARY
---src-hpp=source/xyo-version-application.hpp
---build-include
---no-default-include
---install-include-direct
---use-project=xyo.static
