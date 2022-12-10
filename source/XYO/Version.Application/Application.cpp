@@ -15,7 +15,7 @@ namespace XYO::Version::Application {
 	void Application::showUsage() {
 		printf("XYO Version\n");
 		showVersion();
-		printf("%s\n\n", ::XYO::Version::Application::Copyright::fullCopyright());
+		printf("%s\n\n", ::XYO::Version::Application::Copyright::copyright());
 
 		printf("%s",
 		       "options:\n"
@@ -38,7 +38,7 @@ namespace XYO::Version::Application {
 	};
 
 	void Application::showLicense() {
-		printf("%s%s", ::XYO::Version::Application::License::licenseHeader(), ::XYO::Version::Application::License::licenseBody());
+		printf("%s", ::XYO::Version::Application::License::license());
 	};
 
 	void Application::showVersion() {

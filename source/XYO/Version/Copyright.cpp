@@ -13,7 +13,6 @@ namespace XYO::Version::Copyright {
 	static const char *publisher_ = XYO_VERSION_PUBLISHER;
 	static const char *company_ = XYO_VERSION_COMPANY;
 	static const char *contact_ = XYO_VERSION_CONTACT;
-	static const char *fullCopyright_ = XYO_VERSION_FULL_COPYRIGHT;
 
 	const char *copyright() {
 		return copyright_;
@@ -29,10 +28,6 @@ namespace XYO::Version::Copyright {
 
 	const char *contact() {
 		return contact_;
-	};
-
-	const char *fullCopyright() {
-		return fullCopyright_;
 	};
 
 };

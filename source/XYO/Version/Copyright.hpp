@@ -17,7 +17,6 @@ namespace XYO::Version::Copyright {
 	XYO_VERSION_EXPORT const char *publisher();
 	XYO_VERSION_EXPORT const char *company();
 	XYO_VERSION_EXPORT const char *contact();
-	XYO_VERSION_EXPORT const char *fullCopyright();
 
 };
 
