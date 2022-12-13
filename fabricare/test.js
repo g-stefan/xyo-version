@@ -9,6 +9,10 @@ if(Project.name!="xyo-version"){
 
 // ---
 
+messageAction("test");
+
+// ---
+
 Shell.mkdirRecursivelyIfNotExists("output/test");
 Shell.mkdirRecursivelyIfNotExists("temp");
 
