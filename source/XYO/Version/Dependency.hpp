@@ -13,12 +13,6 @@
 
 // -- Export
 
-#ifndef XYO_VERSION_INTERNAL
-#	ifdef XYO_VERSION_LIBRARY_INTERNAL
-#		define XYO_VERSION_INTERNAL
-#	endif
-#endif
-
 #ifdef XYO_VERSION_INTERNAL
 #	define XYO_VERSION_EXPORT XYO_LIBRARY_EXPORT
 #else
