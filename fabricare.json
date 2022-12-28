@@ -12,7 +12,8 @@
 				"dependency" : [
 					"file-json"
 				],
-				"versionName" : "xyo-version.library"
+				"versionName" : "xyo-version.library",
+				"noRelease" : true
 			},
 			{
 				"name" : "xyo-version.application",
@@ -26,7 +27,8 @@
 				"defines" : [
 					"XYO_VERSION_APPLICATION_LIBRARY"
 				],
-				"linkVersion" : "xyo-version"
+				"linkVersion" : "xyo-version",
+				"noRelease" : true
 			},
 			{
 				"name" : "xyo-version",
