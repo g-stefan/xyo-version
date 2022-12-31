@@ -6,7 +6,7 @@
 			{
 				"name" : "xyo-version",
 				"type" : "xyo-cpp",
-				"make" : "lib-and-dll",
+				"make" : "lib",
 				"SPDX-License-Identifier": "MIT",
 				"sourcePath" : "XYO/Version",
 				"dependency" : [
