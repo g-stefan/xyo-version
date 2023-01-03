@@ -5,7 +5,6 @@
 		"projects" : [
 			{
 				"name" : "xyo-version",
-				"type" : "xyo-cpp",
 				"make" : "lib",
 				"SPDX-License-Identifier": "MIT",
 				"sourcePath" : "XYO/Version",
@@ -16,7 +15,6 @@
 			},
 			{
 				"name" : "xyo-version.application",
-				"type" : "xyo-cpp",
 				"make" : "lib",
 				"SPDX-License-Identifier": "MIT",
 				"sourcePath" : "XYO/Version.Application",
@@ -30,16 +28,14 @@
 			},
 			{
 				"name" : "xyo-version",
-				"type" : "xyo-cpp",
 				"make" : "exe.static",
 				"SPDX-License-Identifier": "MIT",
 				"sourcePath" : "XYO/Version.Application",
 				"dependency" : [
 					"xyo-version"
-				],
-				"hasRelease" : true,
-				"githubRelease" : true
+				]
 			}
-		]
+		],
+		"hasGithub" : true
 	}
 }
