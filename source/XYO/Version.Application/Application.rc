@@ -11,3 +11,4 @@
 1  ICON "Application.ico"
 
 XYO_APPLICATION_VERSION_INFO(XYO_VERSION_APPLICATION,"xyo-version.exe","XYO Version")
+XYO_APPLICATION_MANIFEST("Application.manifest")
