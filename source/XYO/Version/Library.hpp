@@ -19,7 +19,7 @@ namespace XYO::Version {
 	XYO_VERSION_EXPORT bool patchBump(String versionFile, String projectName);
 	XYO_VERSION_EXPORT bool minorBump(String versionFile, String projectName);
 	XYO_VERSION_EXPORT bool majorBump(String versionFile, String projectName);
-	XYO_VERSION_EXPORT bool processTemplate(String versionFile, String projectName, String templateIn, String fileOut, size_t maxLineSize = 16384);
+	XYO_VERSION_EXPORT bool processTemplate(String versionFile, String projectName, String templateIn, String fileOut, size_t maxLineSize = 32768);
 
 };
 

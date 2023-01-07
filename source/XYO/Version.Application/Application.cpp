@@ -68,7 +68,7 @@ namespace XYO::Version::Application {
 		String projectName;
 		String fileIn;
 		String fileOut;
-		int maxLineSize = 16384;
+		int maxLineSize = 32768;
 		bool getVersion = false;
 
 		// ---
