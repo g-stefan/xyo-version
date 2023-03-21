@@ -13,10 +13,10 @@
 
 namespace XYO::Version::Copyright {
 
-	XYO_VERSION_EXPORT const char *copyright();
-	XYO_VERSION_EXPORT const char *publisher();
-	XYO_VERSION_EXPORT const char *company();
-	XYO_VERSION_EXPORT const char *contact();
+	XYO_VERSION_EXPORT std::string copyright();
+	XYO_VERSION_EXPORT std::string publisher();
+	XYO_VERSION_EXPORT std::string company();
+	XYO_VERSION_EXPORT std::string contact();
 
 };
 

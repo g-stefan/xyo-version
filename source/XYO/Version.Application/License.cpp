@@ -8,11 +8,11 @@
 
 namespace XYO::Version::Application::License {
 
-	const char *license() {
+	std::string license() {
 		return XYO::ManagedMemory::License::license();
 	};
 
-	const char *shortLicense() {
+	std::string shortLicense() {
 		return XYO::ManagedMemory::License::shortLicense();
 	};
 

@@ -13,8 +13,8 @@
 
 namespace XYO::Version::License {
 
-	XYO_VERSION_EXPORT const char *license();
-	XYO_VERSION_EXPORT const char *shortLicense();
+	XYO_VERSION_EXPORT std::string license();
+	XYO_VERSION_EXPORT std::string shortLicense();
 
 };
 
