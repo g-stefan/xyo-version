@@ -14,17 +14,33 @@
 				"versionName" : "xyo-version.library"
 			},
 			{
+				"name": "xyo-version.static",
+				"make": "lib",
+				"category": "make",
+				"SPDX-License-Identifier": "MIT",
+				"sourcePath" : "XYO/Version",
+				"dependency" : [
+					"file-json.static"
+				],
+				"dependencyDefines" : [
+					"XYO_VERSION_LIBRARY"
+				],
+				"linkVersion": "xyo-version.library",
+				"crt": "static"
+			},
+			{
 				"name" : "xyo-version.application.static",
 				"make" : "lib",
 				"SPDX-License-Identifier": "MIT",
 				"sourcePath" : "XYO/Version.Application",
 				"dependency" : [
-					"xyo-version"
+					"xyo-version.static"
 				],
-				"defines" : [
+				"dependencyDefines" : [
 					"XYO_VERSION_APPLICATION_LIBRARY"
 				],
-				"linkVersion" : "xyo-version"
+				"linkVersion" : "xyo-version",
+				"crt": "static"
 			},
 			{
 				"name" : "xyo-version",
