@@ -1,7 +1,7 @@
 // Version
-// Copyright (c) 2016-2025 Grigore Stefan <g_stefan@yahoo.com>
+// Copyright (c) 2016-2026 Grigore Stefan <g_stefan@yahoo.com>
 // MIT License (MIT) <http://opensource.org/licenses/MIT>
-// SPDX-FileCopyrightText: 2016-2025 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-FileCopyrightText: 2016-2026 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
 #include <XYO/Version/Library.hpp>
@@ -331,10 +331,10 @@ namespace XYO::Version {
 		String datetime;
 		char buf[64];
 		DateTime now;
-		replace[0][0] = "${VERSION_ABCD}";
-		replace[1][0] = "${VERSION_VERSION}";
-		replace[2][0] = "${VERSION_BUILD}";
-		replace[3][0] = "${VERSION_DATETIME}";
+		replace[0][0] = "#{VERSION_ABCD}";
+		replace[1][0] = "#{VERSION_VERSION}";
+		replace[2][0] = "#{VERSION_BUILD}";
+		replace[3][0] = "#{VERSION_DATETIME}";
 		replace[0][1] = "0,0,0,0";
 		replace[1][1] = "0.0.0";
 		replace[2][1] = "0";
