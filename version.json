@@ -1,14 +1,14 @@
 {
 	"xyo-version.library": {
-		"version": "8.2.0",
-		"build": "10",
-		"date": "2026-06-27",
-		"time": "23:28:03"
+		"version": "8.6.0",
+		"build": "12",
+		"date": "2026-09-16",
+		"time": "23:03:07"
 	},
 	"xyo-version": {
-		"version": "8.2.0",
-		"build": "10",
-		"date": "2026-06-27",
-		"time": "23:28:03"
+		"version": "8.6.0",
+		"build": "12",
+		"date": "2026-09-16",
+		"time": "23:03:07"
 	}
 }

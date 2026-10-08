@@ -393,4 +393,350 @@ namespace XYO::Version {
 		return false;
 	};
 
+	int compare(String versionA, String versionB) {
+		int versionAPatch;
+		int versionAMinor;
+		int versionAMajor;
+		int versionBPatch;
+		int versionBMinor;
+		int versionBMajor;
+		if (sscanf(versionA.value(), "%d.%d.%d", &versionAMajor, &versionAMinor, &versionAPatch) != 3) {
+			return -1;
+		};
+		if (sscanf(versionB.value(), "%d.%d.%d", &versionBMajor, &versionBMinor, &versionBPatch) != 3) {
+			return 1;
+		};
+		if(versionAMajor==versionBMajor) {
+			if(versionAMinor==versionBMinor) {
+				return (versionAPatch-versionBPatch);
+			}
+			return (versionAMinor-versionBMinor);
+		}
+				
+		return (versionAMajor-versionBMajor);
+	};
+
+	//
+	// Version specificity, nodejs (npm semver range) like.
+	//
+	// Every supported specificity is reduced to a half open interval
+	// [low, high) and a specificity may be a list of intervals
+	// intersected by " " (and) or unified by "||" (or).
+	//
+
+	static const int specificityInfinite = 0x7FFFFFFF;
+
+	struct SpecificityVersion {
+			int major;
+			int minor;
+			int patch;
+			int level; // number of parsed components, 0 = any
+	};
+
+	static int specificityCompare(SpecificityVersion &versionA, SpecificityVersion &versionB) {
+		if (versionA.major == versionB.major) {
+			if (versionA.minor == versionB.minor) {
+				return (versionA.patch - versionB.patch);
+			};
+			return (versionA.minor - versionB.minor);
+		};
+		return (versionA.major - versionB.major);
+	};
+
+	static void specificitySet(SpecificityVersion &version, int major, int minor, int patch) {
+		version.major = major;
+		version.minor = minor;
+		version.patch = patch;
+		version.level = 3;
+	};
+
+	static const char *specificitySkipSpace(const char *scan) {
+		while ((*scan == ' ') || (*scan == '\t') || (*scan == ',')) {
+			++scan;
+		};
+		return scan;
+	};
+
+	//
+	// Parse [v]major[.minor[.patch]][-prerelease][+build]
+	// where a component may be "x", "X" or "*".
+	// Prerelease and build metadata are accepted and ignored.
+	//
+
+	static const char *specificityParseVersion(const char *scan, SpecificityVersion &version) {
+		int index;
+		int value;
+
+		version.major = 0;
+		version.minor = 0;
+		version.patch = 0;
+		version.level = 0;
+
+		if ((*scan == 'v') || (*scan == 'V')) {
+			++scan;
+		};
+
+		for (index = 0; index < 3; ++index) {
+			if ((*scan == 'x') || (*scan == 'X') || (*scan == '*')) {
+				++scan;
+				break;
+			};
+			if ((*scan < '0') || (*scan > '9')) {
+				break;
+			};
+			value = 0;
+			while ((*scan >= '0') && (*scan <= '9')) {
+				value = value * 10 + (*scan - '0');
+				++scan;
+			};
+			switch (index) {
+				case 0:
+					version.major = value;
+					break;
+				case 1:
+					version.minor = value;
+					break;
+				case 2:
+					version.patch = value;
+					break;
+			};
+			version.level = index + 1;
+			if (*scan != '.') {
+				break;
+			};
+			++scan;
+		};
+
+		// skip prerelease, build metadata or an unknown tag like "latest"
+		while ((*scan != 0) && (*scan != ' ') && (*scan != '\t') && (*scan != ',') && (*scan != '|')) {
+			++scan;
+		};
+
+		return scan;
+	};
+
+	//
+	// Expand one comparator, given as operator + partial version,
+	// into the interval [low, high)
+	//
+
+	static void specificityInterval(
+	    const char *operator_,
+	    SpecificityVersion &version,
+	    SpecificityVersion &low,
+	    SpecificityVersion &high) {
+
+		specificitySet(low, 0, 0, 0);
+		specificitySet(high, specificityInfinite, specificityInfinite, specificityInfinite);
+
+		if (version.level == 0) {
+			// "*", "x" or any tag, match all
+			return;
+		};
+
+		if (operator_[0] == '^') {
+			specificitySet(low, version.major, version.minor, version.patch);
+			if (version.major > 0 || version.level == 1) {
+				specificitySet(high, version.major + 1, 0, 0);
+				return;
+			};
+			if (version.minor > 0 || version.level == 2) {
+				specificitySet(high, 0, version.minor + 1, 0);
+				return;
+			};
+			specificitySet(high, 0, 0, version.patch + 1);
+			return;
+		};
+
+		if (operator_[0] == '~') {
+			specificitySet(low, version.major, version.minor, version.patch);
+			if (version.level == 1) {
+				specificitySet(high, version.major + 1, 0, 0);
+				return;
+			};
+			specificitySet(high, version.major, version.minor + 1, 0);
+			return;
+		};
+
+		if (operator_[0] == '>') {
+			if (operator_[1] == '=') {
+				specificitySet(low, version.major, version.minor, version.patch);
+				return;
+			};
+			// greater than any version matched by the partial version
+			switch (version.level) {
+				case 1:
+					specificitySet(low, version.major + 1, 0, 0);
+					break;
+				case 2:
+					specificitySet(low, version.major, version.minor + 1, 0);
+					break;
+				default:
+					specificitySet(low, version.major, version.minor, version.patch + 1);
+					break;
+			};
+			return;
+		};
+
+		if (operator_[0] == '<') {
+			if (operator_[1] == '=') {
+				// less or equal to any version matched by the partial version
+				switch (version.level) {
+					case 1:
+						specificitySet(high, version.major + 1, 0, 0);
+						break;
+					case 2:
+						specificitySet(high, version.major, version.minor + 1, 0);
+						break;
+					default:
+						specificitySet(high, version.major, version.minor, version.patch + 1);
+						break;
+				};
+				return;
+			};
+			specificitySet(high, version.major, version.minor, version.patch);
+			return;
+		};
+
+		// exact or partial version, "1.2.3", "1.2", "1", "=1.2.3"
+		specificitySet(low, version.major, version.minor, version.patch);
+		switch (version.level) {
+			case 1:
+				specificitySet(high, version.major + 1, 0, 0);
+				break;
+			case 2:
+				specificitySet(high, version.major, version.minor + 1, 0);
+				break;
+			default:
+				specificitySet(high, version.major, version.minor, version.patch + 1);
+				break;
+		};
+	};
+
+	//
+	// Check if version is matched by versionSpecificity
+	//
+
+	static bool specificityMatch(SpecificityVersion &version, String versionSpecificity) {
+		const char *scan = versionSpecificity.value();
+		char operator_[4];
+		size_t operatorLn;
+		SpecificityVersion parsed;
+		SpecificityVersion parsedHigh;
+		SpecificityVersion low;
+		SpecificityVersion high;
+		SpecificityVersion groupLow;
+		SpecificityVersion groupHigh;
+
+		if (scan == nullptr) {
+			return true;
+		};
+
+		for (;;) {
+			// begin of an "or" group
+			specificitySet(groupLow, 0, 0, 0);
+			specificitySet(groupHigh, specificityInfinite, specificityInfinite, specificityInfinite);
+
+			for (;;) {
+				scan = specificitySkipSpace(scan);
+				if ((*scan == 0) || (*scan == '|')) {
+					break;
+				};
+
+				operatorLn = 0;
+				while ((operatorLn < 2) &&
+				       ((*scan == '>') || (*scan == '<') || (*scan == '=') || (*scan == '~') || (*scan == '^'))) {
+					operator_[operatorLn] = *scan;
+					++operatorLn;
+					++scan;
+				};
+				operator_[operatorLn] = 0;
+				operator_[operatorLn + 1] = 0;
+
+				scan = specificitySkipSpace(scan);
+				scan = specificityParseVersion(scan, parsed);
+
+				// hyphen range, "1.2.3 - 2.3.4"
+				if (operatorLn == 0) {
+					const char *scanHyphen = specificitySkipSpace(scan);
+					if ((scanHyphen[0] == '-') && ((scanHyphen[1] == ' ') || (scanHyphen[1] == '\t'))) {
+						scan = specificitySkipSpace(scanHyphen + 1);
+						scan = specificityParseVersion(scan, parsedHigh);
+						specificitySet(low, parsed.major, parsed.minor, parsed.patch);
+						specificitySet(high, specificityInfinite, specificityInfinite, specificityInfinite);
+						switch (parsedHigh.level) {
+							case 0:
+								break;
+							case 1:
+								specificitySet(high, parsedHigh.major + 1, 0, 0);
+								break;
+							case 2:
+								specificitySet(high, parsedHigh.major, parsedHigh.minor + 1, 0);
+								break;
+							default:
+								specificitySet(high, parsedHigh.major, parsedHigh.minor, parsedHigh.patch + 1);
+								break;
+						};
+						if (specificityCompare(low, groupLow) > 0) {
+							groupLow = low;
+						};
+						if (specificityCompare(high, groupHigh) < 0) {
+							groupHigh = high;
+						};
+						continue;
+					};
+				};
+
+				specificityInterval(operator_, parsed, low, high);
+
+				// intersect with the group interval
+				if (specificityCompare(low, groupLow) > 0) {
+					groupLow = low;
+				};
+				if (specificityCompare(high, groupHigh) < 0) {
+					groupHigh = high;
+				};
+			};
+
+			if ((specificityCompare(version, groupLow) >= 0) && (specificityCompare(version, groupHigh) < 0)) {
+				return true;
+			};
+
+			if (*scan == 0) {
+				break;
+			};
+
+			// end of the "or" group
+			while (*scan == '|') {
+				++scan;
+			};
+			if (*scan == 0) {
+				break;
+			};
+		};
+
+		return false;
+	};
+
+	//
+	// Return true if version does not match versionSpecificity,
+	// the package needs to be updated.
+	//
+
+	bool specificity(String version, String versionSpecificity) {
+		SpecificityVersion version_;
+
+		if (version.value() == nullptr) {
+			return true;
+		};
+		specificityParseVersion(version.value(), version_);
+		if (version_.level == 0) {
+			// unknown installed version
+			return true;
+		};
+		version_.level = 3;
+
+		return !specificityMatch(version_, versionSpecificity);
+	};
+
 };
